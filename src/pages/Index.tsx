@@ -10,15 +10,19 @@ const Index = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleWaitlist = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
       toast({
-        title: "Success!",
-        description: "Thank you for subscribing to our newsletter!",
+        title: "Erfolgreich!",
+        description: "Du wurdest erfolgreich zur Warteliste hinzugefügt!",
       });
       setEmail("");
     }
+  };
+
+  const scrollToWaitlist = () => {
+    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -26,17 +30,17 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container px-4 pt-32 pb-20 text-center animate-fade-up">
         <span className="inline-block px-3 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full mb-6">
-          Welcome to Community Hub
+          Willkommen bei Community Hub
         </span>
         <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-          Build & Monetize Your
+          Baue & Monetarisiere deine
           <span className="text-primary"> Community</span>
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Transform your passion into profit with our powerful community building and monetization tools.
+          Verwandle deine Leidenschaft in Profit mit unseren leistungsstarken Community-Building und Monetarisierungs-Tools.
         </p>
-        <Button size="lg" className="animate-fade-in" onClick={() => toast({ title: "Getting Started!", description: "Welcome aboard! Let's build something amazing together." })}>
-          Get Started
+        <Button size="lg" className="animate-fade-in" onClick={scrollToWaitlist}>
+          Jetzt Starten
         </Button>
       </section>
 
@@ -46,23 +50,23 @@ const Index = () => {
           {[
             {
               icon: Users,
-              title: "Community Growth",
-              description: "Build and nurture your community with powerful engagement tools",
+              title: "Community Wachstum",
+              description: "Baue und pflege deine Community mit leistungsstarken Engagement-Tools",
             },
             {
               icon: DollarSign,
-              title: "Monetization",
-              description: "Multiple revenue streams to maximize your earning potential",
+              title: "Monetarisierung",
+              description: "Mehrere Einnahmequellen um dein Ertragspotential zu maximieren",
             },
             {
               icon: ChartBar,
-              title: "Analytics",
-              description: "Deep insights into your community's engagement and growth",
+              title: "Analytik",
+              description: "Tiefe Einblicke in das Engagement und Wachstum deiner Community",
             },
             {
               icon: Heart,
-              title: "Member Success",
-              description: "Tools and resources to keep your members engaged and happy",
+              title: "Mitglieder Erfolg",
+              description: "Tools und Ressourcen um deine Mitglieder engaged und zufrieden zu halten",
             },
           ].map((feature, index) => (
             <Card key={index} className="p-6 backdrop-blur-sm bg-white/50 hover:bg-white/80 transition-all duration-300 animate-fade-up" style={{ animationDelay: `${index * 100}ms` }}>
@@ -74,22 +78,22 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="container px-4 py-20 text-center">
+      {/* Waitlist Section */}
+      <section id="waitlist" className="container px-4 py-20 text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <h2 className="text-3xl font-bold mb-4">Tritt der Warteliste bei</h2>
           <p className="text-muted-foreground mb-8">
-            Get the latest community building tips and strategies delivered to your inbox.
+            Sei einer der Ersten, die Zugang zu unserer Platform erhalten.
           </p>
-          <form onSubmit={handleSubscribe} className="flex gap-4 max-w-md mx-auto">
+          <form onSubmit={handleWaitlist} className="flex gap-4 max-w-md mx-auto">
             <Input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Deine Email-Adresse"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="backdrop-blur-sm bg-white/50"
             />
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit">Beitreten</Button>
           </form>
         </div>
       </section>
