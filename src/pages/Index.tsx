@@ -5,19 +5,39 @@ import { Users, DollarSign, ChartBar, Heart, Sparkles, Star } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { supabase } from "@/lib/supabase";
 
 const Index = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleWaitlist = (e: React.FormEvent) => {
+  const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('waitlist')
+        .insert([{ email, created_at: new Date().toISOString() }]);
+
+      if (error) throw error;
+
       toast({
         title: "Erfolgreich!",
         description: "Du wurdest erfolgreich zur Warteliste hinzugefügt!",
       });
       setEmail("");
+    } catch (error) {
+      toast({
+        title: "Fehler",
+        description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
+        variant: "destructive",
+      });
+      console.error('Error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -111,12 +131,14 @@ const Index = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="backdrop-blur-sm bg-white/50 border-2 border-primary/20 focus:border-primary/40 transition-colors duration-300"
+              disabled={isSubmitting}
             />
             <Button 
               type="submit"
               className="bg-gradient-to-r from-primary to-purple-600 hover:from-purple-600 hover:to-primary transition-all duration-300"
+              disabled={isSubmitting}
             >
-              Beitreten
+              {isSubmitting ? 'Wird gespeichert...' : 'Beitreten'}
             </Button>
           </form>
         </div>
