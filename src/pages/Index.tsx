@@ -18,11 +18,20 @@ const Index = () => {
 
     setIsSubmitting(true);
     try {
+      // Add console.log to debug the request
+      console.log('Attempting to insert email:', email);
+      
       const { error } = await supabase
         .from('waitlist')
-        .insert([{ email, created_at: new Date().toISOString() }]);
+        .insert([{ 
+          email, 
+          created_at: new Date().toISOString() 
+        }]);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast({
         title: "Erfolgreich!",
@@ -30,12 +39,12 @@ const Index = () => {
       });
       setEmail("");
     } catch (error) {
+      console.error('Error details:', error);
       toast({
         title: "Fehler",
         description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
         variant: "destructive",
       });
-      console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
     }
